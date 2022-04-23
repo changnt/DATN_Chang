@@ -1,3 +1,4 @@
+from unicodedata import name
 from bs4 import BeautifulSoup
 from flask import (Flask, flash, redirect, render_template,
                    request, session, url_for)
@@ -10,7 +11,7 @@ from wtforms import (FileField, PasswordField, SelectField,
 from wtforms.validators import InputRequired, Length
 
 app = Flask(__name__)
-Bootstrap(app) #duoc sd bootstrap
+Bootstrap(app)
 
 # mysql connection setup
 mysql = MySQL()
@@ -28,7 +29,7 @@ photos = UploadSet('photos', IMAGES)
 app.config['UPLOADED_PHOTOS_DEST'] = 'static/img'
 configure_uploads(app, photos)
 
-# returns an array of values : truyen vao cau lenh sql -> tra ve du lieu: 
+# returns an array of values
 def sqlDatas(query, vals, i):
     cursor = conn.cursor()
     cursor.execute(query, vals)
@@ -47,7 +48,7 @@ def sqlDatas(query, vals, i):
     cursor.close()
     return arraydata
 
-# execute sql statements : thuc thi cau lenh ay
+# execute sql statements
 
 
 def sqlExecute(query, vals):
@@ -57,18 +58,18 @@ def sqlExecute(query, vals):
     cursor.close()
 
 
-# wtf form for editor/writer login: validate cac du lieu dat vao
+# wtf form for editor/writer login
 class LoginForm(FlaskForm):
     username = StringField('Tên đăng nhập', validators=[InputRequired()])
     password = PasswordField('Mật khẩu', validators=[
                              InputRequired(), Length(min=8, max=20)])
 
 
-# date format: chuyen tu kieu dl datetime -> chuoi
+# date format
 def myDate(a):
     return str(a.strftime("%x | %X"))
 
-# times ago format: 
+# times ago format
 
 
 def pretty_date(time=False):
@@ -104,12 +105,12 @@ def pretty_date(time=False):
     if day_diff < 7:
         return str(day_diff) + " ngày trước"
     if day_diff < 31:
-        return str(day_diff / 7) + " tuần trước"
+        return str(int(day_diff / 7)) + " tuần trước"
     if day_diff < 365:
-        return str(day_diff / 30) + " tháng trước"
-    return str(day_diff / 365) + " năm trước"
+        return str(int(day_diff / 30)) + " tháng trước"
+    return str(int(day_diff / 365)) + " năm trước"
 
-# returns the sections of the articles: ham lay ra cac chuyen muc
+# returns the sections of the articles
 
 
 def sections():
@@ -120,7 +121,7 @@ def sections():
             mysec.append(i)
     return mysec
 
-# returns the number of articles per section : lay ra so luong cac bai bao cua moi chuyen muc
+# returns the number of articles per section
 
 
 def no_of_articles():
@@ -431,8 +432,8 @@ def admin_newer(section):
         return redirect('/admin/dashboard/'+section+'/'+str(session['offset']))
 
 # logout for editor/writer
-@app.route('/admin/logout', methods=['GET', 'POST'])
-def admin_logout():
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
     if session.get('is_login', None) is not True:
         return redirect('/login')
     else:
@@ -604,17 +605,17 @@ def admin_stats_newer(section, stats):
 ################################################################################################################
 ##                                           VIEWER                                                           ##
 ################################################################################################################
-@app.route('/', methods=['GET', 'POST']) #trang chu
+@app.route('/', methods=['GET', 'POST'])
 def index():
     sections1 = sections()
-    subData = [] #lay cac bai bao ra goc man hinh
+    subData = []
     for section in sections1:
         data = sqlDatas(
             "select * from articles WHERE section=%s and `status`='Đã xuất bản' order by last_edited desc;", section, 1)
         if data is not None:
             data[10] = pretty_date(data[10])
             subData.append(data)
-    hd = [] #lay cac bai bao o giua man hinh
+    hd = []
     homeData = sqlDatas(
         "select * from articles where status='Đã xuất bản' order by last_edited desc limit 5;", None, None)
     for data in homeData:
@@ -628,10 +629,10 @@ def index():
 
     return render_template('newspaper/index.html', sections=sections1, subdata=subData, homedata=hd, active="active")
 
-# viewer part sections : xem bao theo chuyen muc
+# viewer part sections
 @app.route('/<sectionshere>/<offset>', methods=['GET', 'POST'])
 def index_section(sectionshere, offset):
-    if int(offset) == 0: #lay ra so luong bai bao de chia ra tung trang
+    if int(offset) == 0:
         session['index_offset'] = 0
 
     total = sqlDatas(
@@ -668,7 +669,7 @@ def index_section(sectionshere, offset):
 
     return render_template('newspaper/section.html', sections=sections1, subdata=subData, homedata=hd, section_=sectionshere, older=older, newer=newer, active="active")
 
-# viewer part pagination : chuyen giua cac trang trong chuyen muc ( older -> nhay len / newer -> tru di)
+# viewer part pagination
 @app.route('/<sectionshere>/go/<dowhat>', methods=['GET', 'POST'])
 def index_section_go(sectionshere, dowhat):
     if dowhat == "older":
@@ -678,7 +679,7 @@ def index_section_go(sectionshere, dowhat):
 
     return redirect("/"+sectionshere+"/"+str(session['index_offset']))
 
-# viewer part read more : xem chi tiet bai bao
+# viewer part read more
 @app.route('/read/<sectionshere>/<article_id>/<article_headline>', methods=['GET', 'POST'])
 def index_read(sectionshere, article_id, article_headline):
     # category in the side
@@ -691,7 +692,7 @@ def index_read(sectionshere, article_id, article_headline):
             data[10] = pretty_date(data[10])
             subData.append(data)
 
-    hd = sqlDatas("select * from articles where id_article=%s", article_id, 1) #chi hien thi duy nhat 1 bai bao/ la bai bai bao vua nhan vao
+    hd = sqlDatas("select * from articles where id_article=%s", article_id, 1)
     hd[10] = pretty_date(hd[10])
 
     if request.method == "POST":
@@ -700,7 +701,7 @@ def index_read(sectionshere, article_id, article_headline):
 
     return render_template('newspaper/read.html', sections=sections1, subdata=subData, homedata=hd, section_=sectionshere)
 
-# viewer search : tim kiem
+# viewer search
 @app.route('/search/<search>', methods=['GET', 'POST'])
 def index_search(search):
     # category in the side
@@ -713,8 +714,6 @@ def index_search(search):
             data[10] = pretty_date(data[10])
             subData.append(data)
 
-#cau lenh query -> 
-# %s la bien minh truyen vao
     sql_query = "SELECT * FROM articles where headline like %s or byline like %s or body like %s or section like %s or photo_filename like %s or photographer like %s or photo_caption like %s or last_edited like %s order by last_edited desc"
     sval = "%" + search + "%"
     vals = (sval, sval, sval, sval, sval, sval, sval, sval)
@@ -778,7 +777,7 @@ def dbhome():
         return redirect("/admin/login")
 
 # updating of user
-@app.route('/admin/user/update/<id>', methods=['GET', 'POST'])
+@app.route('/admin/user/<id>/update', methods=['GET', 'POST'])
 def dbedituser(id):
     if session['dblogin']:
         if request.method == "POST":

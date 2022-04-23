@@ -8,7 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <!-- Title -->
-    <title>HẢI DƯƠNG</title>
+    <title>
+        BÁO HẢI DƯƠNG
+        {% for section in sections %}
+                                   
+            {{section_}}
+
+        {% endfor %}
+    </title>
     <link href="{{ url_for('static', filename='newspaper/style.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='newspaper/img/core-img/favicon.ico') }}" rel="icon">
 </head>
@@ -74,7 +81,7 @@
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul>
-                                    <li class="active"><a href="/">Trang chủ    </a></li>
+                                    <li class="active"><a href="/"><img style="max-width: 35px;height: 35px;align-items: center" src="/static/newspaper/img/core-img/iconHome_trangchu.png"></a></li>
 
                                     {% for section in sections %}
                                    
@@ -123,7 +130,7 @@
                                         <h6>{{homedata[i][2]}}</h6>
                                     </a>
                                     <div class="post-meta">
-                                        <p class="post-author">Bởi <a href="#">{{homedata[i][3]}}</a></p>
+                                        <p class="post-author">Nguồn <a href="#">{{homedata[i][3]}}</a></p>
                                         <p class="">{{homedata[i][4][:500]}}</p>
                                         <p class="post-date">{{homedata[i][10]}}</p>
                                     </div>

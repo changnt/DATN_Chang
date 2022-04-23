@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>The lathel - Quản lý người dùng và chuyên mục</title>
+  <title>Quản lý người dùng và chuyên mục</title>
   <!-- Bootstrap core CSS -->
   <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
   <!-- Custom styles for this template -->
@@ -69,7 +69,7 @@
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
-                      <FORM method="post" action="/modify/database/user/add">
+                      <FORM method="post" action="/admin/user/add">
                         Tên đăng nhập:
                         <input type="text" class="form-control" name="Username">
                         Mật khẩu:
@@ -92,7 +92,7 @@
               </div>
 
               <hr>
-              <form method="POST" action="/modify/database/user/search">
+              <form method="POST" action="/admin/user/search">
                 <input type="text" name="search" placeholder="Tìm kiếm người dùng" class="form-control">
               </form> <br>
 
@@ -124,9 +124,9 @@
                   {% endif %}
                   <td>
                     <a href="#id{{i[0]}}" class="btn btn-info" data-toggle="modal">Chỉnh sửa</a>
-                    {% if i[5] == "Kích hoạt" %}<a href="/modify/database/user/{{i[0]}}/Bất%20hoạt"
+                    {% if i[5] == "Kích hoạt" %}<a href="/admin/user/{{i[0]}}/Bất%20hoạt"
                       class="btn btn-danger">Bất hoạt</a>
-                    {%else%}<a href="/modify/database/user/{{i[0]}}/Kích%20hoạt" class="btn btn-success">Kích
+                    {%else%}<a href="/admin/user/{{i[0]}}/Kích%20hoạt" class="btn btn-success">Kích
                       hoạt</a>{%endif%}
                     <a href="#userdelete{{i[0]}}" class="btn btn-danger" data-toggle="modal">Xóa</a>
                   </td>
@@ -142,7 +142,7 @@
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div class="modal-body">
-                          <FORM method="post" action="/modify/database/user/update/{{i[0]}}">
+                          <FORM method="post" action="/admin/user/{{i[0]}}/update">
                             Tên đăng nhập:
                             <input type="text" value="{{i[1]}}" class="form-control" disabled=True>
                             Mật khẩu:
@@ -173,7 +173,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                       </div>
                       <div class="modal-body">
-                        <FORM method="post" action="/modify/database/user/{{i[0]}}/delete">
+                        <FORM method="post" action="/admin/user/{{i[0]}}/delete">
                           Xóa người dùng
                           <input type="text" value="{{i[1]}}" class="form-control" name="username" disabled="True">
                       </div>
@@ -206,7 +206,7 @@
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
-                      <FORM method="post" action="/modify/database/section/add">
+                      <FORM method="post" action="/admin/section/add">
                         Chuyên mục:
                         <input type="text" class="form-control" name="sectionname">
                     </div>
@@ -242,7 +242,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                       </div>
                       <div class="modal-body">
-                        <FORM method="post" action="/modify/database/section/update/{{i[0]}}">
+                        <FORM method="post" action="/admin/section/update/{{i[0]}}">
                           Tên:
                           <input type="text" value="{{i[1]}}" class="form-control" name="sectionname">
                       </div>
@@ -264,7 +264,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                       </div>
                       <div class="modal-body">
-                        <FORM method="post" action="/modify/database/section/delete/{{i[0]}}">
+                        <FORM method="post" action="/admin/section/delete/{{i[0]}}">
                           Xóa chuyên mục này?
                           <input type="text" value="{{i[1]}}" class="form-control" name="sectionname" disabled="True">
                       </div>
