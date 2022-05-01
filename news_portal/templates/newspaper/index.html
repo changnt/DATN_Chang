@@ -32,10 +32,9 @@
                         <div class="top-header-content d-flex align-items-center justify-content-between">
                             <!-- Logo -->
                             <div class="logo">
-                                <a href="/"><img src="static/newspaper/img/core-img/logo.png"></a>
+                                <a style="width: 300px;height: 78px;margin: 30px;" href="/"><img src="static/newspaper/img/core-img/logo.png"></a>
                                 <div class="text-white"></div>
                             </div>
-
                             <!-- Login Search Area -->
                             <div class="login-search-area d-flex align-items-center">
                                
@@ -81,14 +80,13 @@
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul>
-                                    <li class="active"><a href="/"><img style="max-width: 35px;height: 35px;align-items: center" src="/static/newspaper/img/core-img/iconHome_trangchu.png"></a></li>
+                                    <li class="active"><a href="/"><img style="max-width: 25px;height: 25px;align-items: center" src="/static/newspaper/img/core-img/iconHome_trangchu.png"></a></li>
 
                                     {% for section in sections %}
                                    
                                     <li><a href="/{{section}}/0">{{section}}</a></li>
 
                                     {% endfor %}
-                                    <li><a href="/contact">Liên hệ</a></li>
                                 </ul>
                             </div>
                             <!-- Nav End -->
@@ -121,12 +119,12 @@
                             <div class="single-blog-post featured-post">
                                 {% if homedata[i][6] %}
                                 <div class="post-thumb">
-                                    <a href="/read/{{homedata[i][5]}}/{{homedata[i][0]}}/{{homedata[i][2]}}"><img src="/static/img/{{homedata[i][6]}}" alt=""></a>
+                                    <a href="/read/{{homedata[i][8]}}/{{homedata[i][0]}}/{{homedata[i][3]}}"><img src="/static/img/{{homedata[i][6]}}" alt=""></a>
                                 </div>
                                 {% endif %}
                                 <div class="post-data">
-                                    <a href="/{{homedata[i][5]}}/0" class="post-catagory">{{homedata[i][5]}}</a>
-                                    <a href="/read/{{homedata[i][5]}}/{{homedata[i][0]}}/{{homedata[i][2]}}" class="post-title">
+                                    <a href="/{{homedata[i][8]}}/0" class="post-catagory">{{homedata[i][8]}}</a>
+                                    <a href="/read/{{homedata[i][8]}}/{{homedata[i][0]}}/{{homedata[i][3]}}" class="post-title">
                                         <h6>{{homedata[i][2]}}</h6>
                                     </a>
                                     <div class="post-meta">

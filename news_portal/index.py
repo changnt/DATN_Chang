@@ -611,7 +611,7 @@ def index():
     subData = []
     for section in sections1:
         data = sqlDatas(
-            "select * from articles WHERE section=%s and `status`='Đã xuất bản' order by last_edited desc;", section, 1)
+            "select * from articles WHERE section=%s and status='Đã xuất bản' order by last_edited desc;", section, 1)
         if data is not None:
             data[10] = pretty_date(data[10])
             subData.append(data)
@@ -636,7 +636,7 @@ def index_section(sectionshere, offset):
         session['index_offset'] = 0
 
     total = sqlDatas(
-        "select count(*) from articles where section=%s and `status`='Đã xuất bản'", sectionshere, 1)[0]
+        "select count(*) from articles where section=%s and status='Đã xuất bản'", sectionshere, 1)[0]
 
     newer = ""
     older = ""
@@ -650,13 +650,13 @@ def index_section(sectionshere, offset):
     subData = []
     for section in sections1:
         data = sqlDatas(
-            "select * from articles WHERE section=%s and `status`='Đã xuất bản' order by last_edited desc;", section, 1)
+            "select * from articles WHERE section=%s and status='Đã xuất bản' order by last_edited desc;", section, 1)
         if data is not None:
             data[10] = pretty_date(data[10])
             subData.append(data)
 
     hd = []
-    homeData = sqlDatas("select * from articles where section=%s and `status`='Đã xuất bản' order by last_edited desc limit 5 offset " +
+    homeData = sqlDatas("select * from articles where section=%s and status='Đã xuất bản' order by last_edited desc limit 5 offset " +
                         str(session['index_offset']), sectionshere, None)
     for data in homeData:
         data[4] = str(BeautifulSoup(data[4], "lxml").text)
@@ -687,8 +687,9 @@ def index_read(sectionshere, article_id, article_headline):
     subData = []
     for section in sections1:
         data = sqlDatas(
-            "select * from articles WHERE section=%s and `status`='Đã xuất bản' order by last_edited desc;", section, 1)
+            "select * from articles WHERE section=%s and status='Đã xuất bản' order by last_edited desc;", section, 1)
         if data is not None:
+            data[4] = str(BeautifulSoup(data[4], "lxml").text)
             data[10] = pretty_date(data[10])
             subData.append(data)
 
@@ -709,12 +710,13 @@ def index_search(search):
     subData = []
     for section in sections1:
         data = sqlDatas(
-            "select * from articles WHERE section=%s and `status`='Đã xuất bản' order by last_edited desc;", section, 1)
+            "select * from articles WHERE section=%s and status ='Đã xuất bản' order by last_edited desc;", section, 1)
         if data is not None:
+            data[4] = str(BeautifulSoup(data[4], "lxml").text)
             data[10] = pretty_date(data[10])
             subData.append(data)
 
-    sql_query = "SELECT * FROM articles where headline like %s or byline like %s or body like %s or section like %s or photo_filename like %s or photographer like %s or photo_caption like %s or last_edited like %s order by last_edited desc"
+    sql_query = "SELECT * FROM articles where headline like %s or byline like %s or body like %s or section like %s or photo_filename like %s or photographer like %s or photo_caption like %s or last_edited like %s and status =  order by last_edited desc"
     sval = "%" + search + "%"
     vals = (sval, sval, sval, sval, sval, sval, sval, sval)
     results = sqlDatas(sql_query, vals, None)
@@ -728,24 +730,6 @@ def index_search(search):
         return redirect("/search/"+search)
 
     return render_template('newspaper/search.html', sections=sections1, subdata=subData, results=result, searchMo=search)
-
-# viewer part contact page
-@app.route('/contact', methods=['GET', 'POST'])
-def index_contact():
-    sections1 = sections()
-    subData = []
-    for section in sections1:
-        data = sqlDatas(
-            "select * from articles WHERE section=%s and `status`='Đã xuất bản' order by last_edited desc;", section, 1)
-        if data is not None:
-            data[10] = pretty_date(data[10])
-            subData.append(data)
-
-    if request.method == "POST" and "search" in request.form:
-        search = request.form["search"]
-        return redirect("/search/"+search)
-
-    return render_template('newspaper/contact.html', sections=sections1, subdata=subData)
 
 
 ################################################################################################################

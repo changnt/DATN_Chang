@@ -9,7 +9,7 @@
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title -->
-    <title>The LATHE</title>
+    <title>Liên hệ</title>
 
 
       <link href="{{ url_for('static', filename='newspaper/style.css') }}" rel="stylesheet">
@@ -80,14 +80,13 @@
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul>
-                                    <li><a href="/">Trang chủ</a></li>
+                                    <li class="active"><a href="/"><img style="max-width: 25px;height: 30px;align-items: center" src="/static/newspaper/img/core-img/iconHome_trangchu.png"></a></li>
 
                                     {% for section in sections %}
                                    
                                     <li><a href="/{{section}}/0">{{section}}</a></li>
 
                                     {% endfor %}
-                                    <li class="active"><a href="/contact">Liên hệ</a></li>
                                 </ul>
                             </div>
                             <!-- Nav End -->
