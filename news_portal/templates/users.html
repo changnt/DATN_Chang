@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Quản lý người dùng</title>
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static', filename='styles/simple-sidebar.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='newspaper/img/core-img/favicon.ico') }}" rel="icon">
+</head>
+
+<body>
+  <div class="d-flex" id="wrapper">
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse fixed" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">🏠 Trang chủ</a>
+            </li>
+
+            {% if session['position'] == "Quản trị" %}
+            <li class="nav-item active">
+              <a class="nav-link" href="/dashboard/articles/page/1">📰 Bài báo</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/dashboard/sections">§ Chuyên mục</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/dashboard/users">👤 Người dùng</a>
+            </li>
+            {% endif %}
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                👤 {{user['name']}}
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/dashboard/profile">Thông tin</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/logout">Đăng xuất</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+        {% if messages %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <!-- <strong>Title</strong> --> {{ message }}
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <div class="container-fluid">
+        <div class="container">
+          <div class="row">
+            <!-- Blog Entries Column -->
+            <div class="col-md-12" id="User">
+              <h1>Người dùng</h1><a href="#add" data-toggle="modal" class="btn btn-primary">Thêm người dùng</a>
+              
+              <hr>
+
+              <!-- Add User Modal HTML -->
+              <div id="add" class="modal fade">
+                <div class="modal-dialog modal-confirm">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Thêm người dùng</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <FORM method="post" action="/dashboard/users">
+                        Tên đăng nhập:
+                        <input type="text" class="form-control" name="username" required>
+                        Mật khẩu:
+                        <input type="text" class="form-control" name="password" required>
+                        Tên:
+                        <input type="text" class="form-control" name="name" required>
+                        Vị trí:
+                        <select class="form-control" name="position">
+                          <option>Biên soạn</option>
+                          <option>Biên tập</option>
+                          <option>Quản trị</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-info" data-dismiss="modal">Hủy</button>
+                      <input type="submit" class="btn btn-primary" value="Thêm">
+                      </FORM>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <table class="table">
+                <tr>
+                  <th>Mã</th>
+                  <th>Tên đăng nhập</th>
+                  <th>Mật khẩu</th>
+                  <th>Tên</th>
+                  <th>Vị trí</th>
+                  <th>Trạng thái</th>
+                  <th>Các hành động</th>
+                </tr>
+                {% for i in users %}
+                <tr>
+                  <td>{{i['id_user']}}</td>
+                  <td>{{i['username']}}</td>
+                  <td>{{i['password']}}</td>
+                  <td>{{i['name']}}</td>
+                  <td>{{i['position']}}</td>
+                  {% if i['status'] == "Kích hoạt" %}
+                    <td>
+                      <div style="padding-left: 24px;">🔵</div>
+                    </td>
+                  {% else %}
+                    <td>
+                      <div style="padding-left: 24px;">🔴</div>
+                    </td>
+                  {% endif %}
+                  <td>
+                    <a href="#update{{i['id_user']}}" class="btn btn-info" data-toggle="modal">Chỉnh sửa</a>
+                    <a href="#delete{{i['id_user']}}" class="btn btn-danger" data-toggle="modal">Xóa</a>
+                  </td>
+                </tr>
+
+                  <!-- Update User Modal HTML -->
+                  <div id="update{{i['id_user']}}" class="modal fade">
+                    <div class="modal-dialog modal-confirm">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Cập nhật người dùng</h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                          <FORM method="post" action="/dashboard/users/{{i['id_user']}}/update">
+                            Tên đăng nhập:
+                            <input type="text" value="{{i['username']}}" class="form-control" disabled=True>
+                            Mật khẩu:
+                            <input type="text" value="{{i['password']}}" class="form-control" name="password" required>
+                            Họ và tên:
+                            <input type="text" value="{{i['name']}}" class="form-control" name="name" required>
+                            Vị trí:
+                            <select class="form-control" name="position">
+                              <option {% if i['position']=="Biên soạn" %}selected{% endif %}>Nhà văn</option>
+                              <option {% if i['position']=="Biên tập" %}selected{% endif %}>Biên tập</option>
+                              <option {% if i['position']=="Quản trị" %}selected{% endif %}>Quản trị</option>
+                            </select>
+                            Trạng thái:
+                            <select class="form-control" name="status">
+                              <option {% if i['status']=="Kích hoạt" %}selected{% endif %}>Kích hoạt</option>
+                              <option {% if i['status']=="Bất hoạt" %}selected{% endif %}>Bất hoạt</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-info" data-dismiss="modal">Hủy</button>
+                          <input type="submit" class="btn btn-primary" value="Cập nhật">
+                          </FORM>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                <!-- Delete User Modal HTML -->
+                <div id="delete{{i['id_user']}}" class="modal fade">
+                  <div class="modal-dialog modal-confirm">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title">Xóa người dùng</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      </div>
+                      <div class="modal-body">
+                        <FORM method="post" action="/dashboard/users/{{i['id_user']}}/delete">
+                          Xóa người dùng
+                          <input type="text" value="{{i['username']}}" class="form-control" name="username" disabled="True">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-info" data-dismiss="modal">Hủy</button>
+                        <input type="submit" class="btn btn-primary" value="Xóa">
+                        </FORM>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <br>
+  <br>
+  <br>
+
+
+
+
+
+  <!-- Footer -->
+  <footer class="page-footer bg-light border-top font-small">
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2022 Bản quyền:
+      <a href="https://www.facebook.com/nguyen.phuongchang"> Chang Chang</a>
+    </div>
+    <!-- Copyright -->
+
+  </footer>
+  <!-- Footer -->
+
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+
+
+</body>
+</html>

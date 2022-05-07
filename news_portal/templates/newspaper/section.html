@@ -9,7 +9,7 @@
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title -->
-    <title>{{section_}}</title>
+    <title>{{section_name}} - BÁO HẢI DƯƠNG</section></title>
 
 
       <link href="{{ url_for('static', filename='newspaper/style.css') }}" rel="stylesheet">
@@ -31,8 +31,13 @@
                         <div class="top-header-content d-flex align-items-center justify-content-between">
                             <!-- Logo -->
                             <div class="logo">
-                                <a style="width: 300px;height: 78px;margin: 30px;" href="/"><img src="/static/newspaper/img/core-img/logo.png"></a>
-                                <div class="text-white">Trang báo điện tử của Chang</div>
+                                <a href="/"><img src="/static/img/logo-bao.png" alt=""></a>
+                            </div>
+                            <!-- Argibank -->
+                            <div >
+                                <a href="https://www.agribank.com.vn/" target="_blank"  >
+                                    <img src="/static/img/logo-argi.jpg" style="padding: 20px 20px 0px 40px;">
+                                </a>
                             </div>
 
                             <!-- Login Search Area -->
@@ -40,8 +45,8 @@
                                
                                 <!-- Search Form -->
                                 <div class="search-form">
-                                    <form action="#" method="post">
-                                        <input type="search" name="search" class="form-control" placeholder="Tìm kiếm">
+                                    <form action="/Tìm kiếm/" method="get">
+                                        <input type="search" name="content" class="form-control" placeholder="Tìm kiếm">
                                         <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
                                     </form>
                                 </div>
@@ -61,7 +66,7 @@
 
                         <!-- Logo -->
                         <div class="logo">
-                            <a href="index.html"><img src="/static/newspaper/img/core-img/logo.png" alt=""></a>
+                            <a href="index.html"><img src="/static/img/logo-bao.png" alt=""></a>
                         </div>
 
                         <!-- Navbar Toggler -->
@@ -80,12 +85,9 @@
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul>
-                                    <li class="active"><a href="/"><img style="max-width: 25px;height: 30px;align-items: center" src="/static/newspaper/img/core-img/iconHome_trangchu.png"></a></li>
-
+                                    <li><a href="/"><img src="/static/img/iconHome.png"></a></li>
                                     {% for section in sections %}
-                                   
-                                    <li {% if section == section_ %}class="active"{%endif%}><a href="/{{section}}/0">{{section}}</a></li>
-
+                                    <li><a href="/Chuyên mục/{{section['name']}}/{{section['id_section']}}/1">{{section['name']}}</a></li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -101,7 +103,7 @@
     <!-- ##### Hero Area Start ##### -->
     <div class="my-3">
         <div class="container">
-            <h1>{{section_}}</h1>
+            <h1>{{section_name}}</h1>
             <hr>
         </div>
     </div>
@@ -121,19 +123,18 @@
 
                             {% for i in range(2) %}
                             <div class="single-blog-post featured-post">
-                                {% if homedata[i][6] %}
+                                {% if homedata[i]['photo'] %}
                                 <div class="post-thumb">
-                                    <a href="#"><img src="/static/img/{{homedata[i][6]}}" alt=""></a>
+                                    <a href="/{{sections[i]['name']}}/{{homedata[i]['id_article']}}/{{homedata[i]['headline']}}"><img src="/static/img/{{homedata[i]['photo']}}" alt=""></a>
                                 </div>
                                 {% endif %}
                                 <div class="post-data">
-                                    <a href="/read/{{homedata[i][5]}}/{{homedata[i][0]}}/{{homedata[i][2]}}" class="post-title">
-                                        <h6>{{homedata[i][2]}}</h6>
+                                    <a href="/{{sections[i]['name']}}/{{homedata[i]['id_article']}}/{{homedata[i]['headline']}}" class="post-title">
+                                        <h6>{{homedata[i]['headline']}}</h6>
                                     </a>
                                     <div class="post-meta">
-                                        <p class="post-author">Nguồn <a href="#">{{homedata[i][3]}}</a></p>
-                                        <p class="">{{homedata[i][4][:500]}}</p>
-                                        <p class="post-date">{{homedata[i][10]}}</p>
+                                        <p class="">{{homedata[i]['body'][:500]}}</p>
+                                        <p class="post-date">{{homedata[i]['last_edited']}}</p>
                                     </div>
                                 </div>
                                 <hr>
@@ -148,20 +149,20 @@
                             {% for i in range(2,5)%}
 
                             <div class="single-blog-post featured-post-2">
-                                {% if homedata[i][6] %}
+                                {% if homedata[i]['photo'] %}
                                 <div class="post-thumb">
-                                    <a href="#"><img src="/static/img/{{homedata[i][6]}}" alt=""></a>
+                                    <a href="/{{sections[i]['name']}}/{{homedata[i]['id_article']}}/{{homedata[i]['headline']}}"><img src="/static/img/{{homedata[i]['photo']}}" alt=""></a>
                                 </div>
                                 {% endif %}
                                 <div class="post-data">
                                     <div class="post-meta">
-                                        <a href="/read/{{homedata[i][5]}}/{{homedata[i][0]}}/{{homedata[i][2]}}" class="post-title">
-                                            <h6>{{homedata[i][2]}}</h6>
+                                        <a href="/{{sections[i]['name']}}/{{homedata[i]['id_article']}}/{{homedata[i]['headline']}}" class="post-title">
+                                            <h6>{{homedata[i]['headline']}}</h6>
                                         </a>
-                                        <p>{{homedata[i][4][:100]}}</p>
+                                        <p>{{homedata[i]['body'][:100]}}</p>
                                         <!-- Post Like & Post Comment -->
                                         <div class="d-flex align-items-center">
-                                            <p class="post-date">{{homedata[i][10]}}</p>
+                                            <p class="post-date">{{homedata[i]['last_edited']}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -174,51 +175,33 @@
 
                     </div>
                     {% endif %}
-                    {% if homedata|length < 5%}
-                    <div class="row">
-                        <div class="col-12 col-lg-12">
-                            {% for data in homedata %}
-                            <div class="single-blog-post small-featured-post d-flex">
-                                {% if data[6] %}
-                                <div class="post-thumb">
-                                    <a href="#"><img src="/static/img/{{data[6]}}" alt=""></a>
-                                </div>
-                                {% endif %}
-                                <div class="post-data">
-                                    <div class="post-meta">
-                                        <a href="/read/{{data[5]}}/{{data[0]}}/{{data[2]}}" class="post-title">
-                                            <h6>{{data[2]}}</h6>
-                                        </a>
-                                        <p class="post-date">{{data[10]}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}                    
-                        </div>                        
+                    
+                    <div class="my-3 text-center">
+                        <a class="btn btn-danger text-white {{older}}" href="/Chuyên mục/{{section_name}}/{{id_section}}/{{older}}">&larr; cũ hơn</a>
+                        <a class="btn btn-danger text-white {{newer}}" href="/Chuyên mục/{{section_name}}/{{id_section}}/{{newer}}">mới hơn &rarr;</a>
                     </div>
-                    {%endif%}
-                    <div class="my-3 text-center"><a class="btn btn-danger text-white {{older}}" href="/{{section_}}/go/older">&larr; cũ hơn</a> <a href="/{{section_}}/go/newer" class="btn btn-danger text-white {{newer}}">mới hơn &rarr;</a></div>
-                    <br><hr>
+                    <br>
+                    <hr>
 
                 </div>
 
                 <div class="col-12 col-md-6 col-lg-4">
                     <!-- Single Featured Post -->
 
-                    {% for data in subdata %}
+                    {% for i in range(12) %}
                     <div class="single-blog-post small-featured-post d-flex">
-                        {% if data[6] %}
+                        {% if subdata[i]['photo'] %}
                         <div class="post-thumb">
-                            <a href="#"><img src="/static/img/{{data[6]}}" alt=""></a>
+                            <a href="/{{sections[i]['name']}}/{{subdata[i]['id_article']}}/{{subdata[i]['headline']}}"><img src="/static/img/{{subdata[i]['photo']}}" alt=""></a>
                         </div>
                         {% endif %}
                         <div class="post-data">
-                            <a href="/{{data[5]}}/0" class="post-catagory">{{data[5]}}</a>
+                            <a href="/Chuyên mục/{{sections[i]['name']}}/{{sections[i]['id_section']}}/1" class="post-catagory">{{sections[i]['name']}}</a>
                             <div class="post-meta">
-                                <a href="/read/{{data[5]}}/{{data[0]}}/{{data[2]}}" class="post-title">
-                                    <h6>{{data[2]}}</h6>
+                                <a href="/{{sections[i]['name']}}/{{subdata[i]['id_article']}}/{{subdata[i]['headline']}}" class="post-title">
+                                    <h6>{{subdata[i]['headline']}}</h6>
                                 </a>
-                                <p class="post-date">{{data[10]}}</p>
+                                <p class="post-date">{{subdata[i]['last_edited']}}</p>
                             </div>
                         </div>
                     </div>
@@ -232,51 +215,51 @@
     <!-- ##### Featured Post Area End ##### -->
 
 <!-- ##### Footer Area Start ##### -->
-    <footer class="footer-area">
+<footer class="footer-area">
 
-        <!-- Main Footer Area -->
-        <div class="main-footer-area">
-            <div class="container">
-                <div class="row">
+    <!-- Main Footer Area -->
+    <div class="main-footer-area">
+        <div class="container">
+            <div class="row">
 
-                    <!-- Footer Widget Area -->
-                    <div class="col-12 col-sm-6 col-lg-12">
-                        <div class="footer-widget-area mt-80">
-                            <!-- Footer Logo -->
-                            <div class="footer-logo">
-                                <a href="/"><img src="/static/newspaper/img/core-img/logo.png" alt=""></a>
-                                <div class="text-white">Trang báo điện tử của Chang</div>
-                            </div>
-                            <!-- List -->
-                            <ul class="list">
-                                <li><a href="mailto:chang@gmail.com">chang@gmail.com</a></li>
-                                <li><a href="tel:+0123456789">0123456789</a></li>
-                                <li><a href="tel:+0123456789">0123456789</a></li>
-                                <li><a href="https://www.facebook.com/nguyen.phuongchang">www.facebook.com/nguyen.phuongchang"</a></li>
-                            </ul>
+                <!-- Footer Widget Area -->
+                <div class="col-12 col-sm-6 col-lg-12">
+                    <div class="footer-widget-area mt-80">
+                        <!-- Footer Logo -->
+                        <div class="footer-logo">
+                            <a href="/"><img src="/static/img/logo-bao.png" alt=""></a>
+                            <div class="text-white"></div>
                         </div>
+                        <!-- List -->
+                        <ul class="list">
+                            <li><a href="mailto:chang@gmail.com">changnt82@gmail.com</a></li>
+                            <li><a href="tel:+0123456789">Đường dây nóng: 0347541678</a></li>
+                            <li><a href="tel:+0123456789">Liên hệ quảng cáo: 0347541678</a></li>
+                            <li><a href="https://www.facebook.com/nguyen.phuongchang">www.facebook.com/nguyen.phuongchang"</a></li>
+                        </ul>
                     </div>
-
-  
-
                 </div>
+
+
+
             </div>
         </div>
+    </div>
 
-        <!-- Bottom Footer Area -->
-        <div class="bottom-footer-area">
-            <div class="container h-100">
-                <div class="row h-100 align-items-center">
-                    <div class="col-12">
-                        <!-- Copywrite -->
-                        <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+    <!-- Bottom Footer Area -->
+    <div class="bottom-footer-area">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12">
+                    <!-- Copywrite -->
+                    <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> Bản quyền thuộc về Báo điện tử Hải Dương</a>
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-                    </div>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
     <!-- ##### Footer Area Start ##### -->
 
     <!-- ##### All Javascript Files ##### -->

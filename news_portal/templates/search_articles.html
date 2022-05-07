@@ -1,0 +1,241 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Tìm kiếm</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static', filename='styles/simple-sidebar.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='newspaper/img/core-img/favicon.ico') }}" rel="icon">
+
+</head>
+
+<body>
+
+
+
+
+  <div class="d-flex" id="wrapper">
+
+     <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading">BÁO HẢI DƯƠNG</div>
+      <div class="list-group list-group-flush">
+        <a href="/dashboard/articles/page/1" class="list-group-item list-group-item-action bg-light">📌 Bảng điều khiển</a>
+        <ul class="list-group list-group-item">
+          {% for section in sections %}
+
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a class="list-group-item-action" href="/dashboard/articles/sections/{{section['id_section']}}/page/1">📎 
+            {{  section['name'] }}
+
+            </a>
+            {%if section['count'] > 0%}
+            <span class="badge badge-primary badge-pill">
+              
+            {{section['count']}}
+            
+          </span>
+          {%endif%}
+
+          </li>              
+          {% endfor %}
+        </ul>
+
+               
+                 
+               
+        <a href="/dashboard/articles/create" class="list-group-item list-group-item-action bg-light">📝 Tao bài báo</a>
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <button class="btn btn-primary" id="menu-toggle">Menu</button>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">🏠 Trang chủ</a>
+            </li>
+
+            {% if session['position'] == "Quản trị" %}
+            <li class="nav-item active">
+              <a class="nav-link" href="/dashboard/articles/page/1">📰 Bài báo</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/dashboard/sections">§ Chuyên mục</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/dashboard/users">👤 Người dùng</a>
+            </li>
+            {% endif %}
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                👤 {{user['name']}}
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/dashboard/profile">Thông tin</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/logout">Đăng xuất</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+      <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <!-- <strong>Title</strong> --> {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+     <div class="container-fluid">
+
+      <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <!-- Blog Entries Column -->
+      <div class="col-md-8">
+
+        <h1 class="my-3">
+          📍 Tìm kiếm
+        </h1>
+        <hr>
+        <h4 class="my-2">Kết quả tìm kiếm của <em>"{{ content }}"</em></h4>
+   <div>
+    <div class="row">
+    {% for article in article_list %}
+    <div class="col-md-4 my-1">
+    <div class="card my-2"
+    {% if article['status'] == 'Bản thảo'%}
+    style="background-color: lightyellow"
+    {% endif %}
+    {% if article['status'] == 'Xuất bản'%}
+    style="background-color: #d7f9d7"
+    {% endif %}
+    >
+      <div class="card-body my-1">🔴 <em>{{article['headline']}}</em>
+
+      <div class="text-muted">{{article['last_edited']}}<br><a href="/dashboard/articles/read/{{article['id_article']}}" class="btn-link">Đi tới bài báo này</a></div>
+    </div>
+      
+    </div>
+   </div>
+    {% endfor %}
+  </div>
+ 
+                <div class="list-group-item-action my-3 text-muted"><center> - - - - Hết - - - - </center></div>
+              
+            
+      </div>
+
+
+  </div>
+  <!-- /.container -->
+<div class="col-md-4">
+
+        <!-- Search Widget -->
+        <div class="card my-4">
+          <h5 class="card-header">🔎 Tìm kiếm</h5>
+          <div class="card-body">
+            <div class="search-form">
+              <form action="/dashboard/articles/search/" method="get">
+                <div class="input-group">
+                  <input type="search" name="content" class="form-control" placeholder="Tìm kiếm" required>
+                  <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="submit" id="btn_search">Tìm</button>
+                  </span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+  <!-- Categories Widget -->
+        <div class="card my-4">
+          <h5 class="card-header">📁 Chuyên mục</h5>
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <ul class="list-unstyled mb-0">
+                  {% for section in sections %}       
+                  <li>
+                    🔷 <a href="/dashboard/articles/sections/{{section['id_section']}}/page/1">
+                    {{ section['name'] }}
+                    </a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+
+<!-- Footer -->
+<footer class="page-footer bg-light border-top font-small">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2022 Bản quyền:
+    <a href="https://www.facebook.com/nguyen.phuongchang"> Chang Chang</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+
+
+
+
+  
+  <!-- Bootstrap core JavaScript -->
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+  <!-- Menu Toggle Script -->
+
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+</body>
+</html>

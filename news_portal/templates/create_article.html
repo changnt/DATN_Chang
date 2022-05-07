@@ -26,36 +26,27 @@
  <div class="d-flex" id="wrapper">
 
      <!-- Sidebar -->
-    <div class="bg-light border-right" id="sidebar-wrapper">
-      <div class="sidebar-heading">Tạo bài báo</div>
-      <div class="list-group list-group-flush">
-                <a href="/admin/dashboard/{{sec}}/0" class="list-group-item list-group-item-action bg-light">📌 Bảng điều khiển</a>
-                <ul class="list-group list-group-item">
-                  {% for i in article_counts %}
-
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a class="list-group-item-action" href="/admin/dashboard/{{i[0]}}/0">📎 
-                    {{  i[0] }}
-
-                    </a>
-                    {%if i[1] > 0%}
-                    <span class="badge badge-primary badge-pill">
-                      
-                    {{i[1]}}
-                    
-                  </span>
-                  {%endif%}
-        
-                  </li>              
-                  {% endfor %}
-                </ul>
-
-               
-                 
-               
-        <a href="{{ url_for('admin')}}" class="list-group-item list-group-item-action bg-light">📝 Tạo bài báo</a>
-      </div>
+  <div class="bg-light border-right" id="sidebar-wrapper">
+    <div class="sidebar-heading">BÁO HẢI DƯƠNG</div>
+    <div class="list-group list-group-flush">
+      <a href="/dashboard/articles/page/1" class="list-group-item list-group-item-action bg-light">📌 Bảng điều khiển</a>
+      <ul class="list-group list-group-item">
+        {% for section in sections %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a class="list-group-item-action" href="/dashboard/articles/sections/{{section['id_section']}}/page/1">📎 
+            {{  section['name'] }}
+            </a>
+            {%if section['count'] > 0%}
+              <span class="badge badge-primary badge-pill">
+                {{section['count']}}
+              </span>
+            {%endif%}
+          </li>              
+        {% endfor %}
+      </ul> 
+      <a href="/dashboard/articles/create" class="list-group-item list-group-item-action bg-light">📝 Tạo bài báo</a>
     </div>
+  </div>
     <!-- /#sidebar-wrapper -->
 
     <!-- Page Content -->
@@ -74,12 +65,24 @@
               <a class="nav-link" href="/">🏠 Trang chủ</a>
             </li>
 
+            {% if session['position'] == "Quản trị" %}
+            <li class="nav-item active">
+              <a class="nav-link" href="/dashboard/articles/page/1">📰 Bài báo</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/dashboard/sections">§ Chuyên mục</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/dashboard/users">👤 Người dùng</a>
+            </li>
+            {% endif %}
+
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                👤 {{FullName}}
+                👤 {{user['name']}}
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="/admin/account/all">Thông tin</a>
+                <a class="dropdown-item" href="/dashboard/profile">Thông tin</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="/logout">Đăng xuất</a>
               </div>
@@ -116,22 +119,16 @@
         	{{ wtf.form_field(form.byline) }}
         	{{ wtf.form_field(form.section) }}
         	{{ wtf.form_field(form.body) }}
-           <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#add_photo">📷 Thêm ảnh</button>
-          <div id="add_photo" class="collapse">
-             {{ wtf.form_field(form.photo, class="file-input btn", accept="image/*") }}
-            {{ wtf.form_field(form.photographer)}}
-          	{{ wtf.form_field(form.photo_caption) }}
-          </div>
-            {{ wtf.form_field(form.btn_save, class="btn btn-primary", value="📄 Lưu bản thảo") }}
-
-            {% if position == "Biên tập" %}
+          {{ wtf.form_field(form.photo, class="file-input btn", accept="image/*") }}
+          {{ wtf.form_field(form.btn_save, class="btn btn-primary", value="📄 Lưu bản thảo") }}
+          {% if user['position'] != "Biên soạn" %}
             {{ wtf.form_field(form.btn_publish, class="btn btn-success", value="📰 Xuất bản bài báo") }}
-            {% endif %}
+          {% endif %}
 
 
-       <script type="text/javascript" src="{{ url_for('static', filename='tinymce/js/tinymce/tinymce.min.js') }}"></script>
-            <script>tinymce.init({ selector: 'textarea'})</script>
-
+        <script type="text/javascript" src="{{ url_for('static', filename='tinymce/js/tinymce/tinymce.min.js') }}"></script>
+        <script>tinymce.init({ selector: 'textarea'})</script>
+        </form>
       </div>
 
        <!-- Sidebar Widgets Column -->
@@ -141,11 +138,13 @@
         <div class="card my-4">
           <h5 class="card-header">🔎 Tìm kiếm</h5>
           <div class="card-body">
-            <div class="input-group">
-              <input type="text" class="form-control" id="txt_search" placeholder="Tên bài báo...">
-              <span class="input-group-btn">
-                <button class="btn btn-secondary" type="button" id="btn_search">Tìm</button>
-              </span>
+            <div class="search-form">
+              <form action="/dashboard/articles/search/" method="get">
+                <div class="input-group">
+                  <input type="search" name="content" class="form-control" placeholder="Tìm kiếm" required>
+                  <input class="btn btn-secondary" type="submit" value="Tìm" id="btn_search">
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -158,8 +157,8 @@
                 <ul class="list-unstyled mb-0">
                   {% for section in sections %}       
                   <li>
-                    🔷 <a href="/admin/dashboard/{{section}}/0">
-                    {{ section }}
+                    🔷 <a href="/dashboard/articles/sections/{{section['id_section']}}/page/1">
+                    {{ section['name'] }}
                     </a>
                   </li>
              
@@ -202,26 +201,11 @@
   <!-- Menu Toggle Script -->
 
   <script>
-    $("#menu-toggle").click(function(e) {
+    $("#menu-toggle").click(function(e)
+    {
       e.preventDefault();
       $("#wrapper").toggleClass("toggled");
     });
   </script>
-  
-          <script>
-document.getElementById('btn_search').onclick = function() {
-  if (document.getElementById('txt_search').value.trim() != '')
-  {
-    location.href = '/admin/search/' + document.getElementById('txt_search').value;
-  }
-};
-</script>
-
- 
-
-  
-
-
 </body>
-
 </html>

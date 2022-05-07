@@ -10,9 +10,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>                         
-    Biên soạn và biên tập bài báo
-  </title>
+  <title>Biên soạn và biên tập bài báo</title>
 
   <!-- Bootstrap core CSS -->
   <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -34,31 +32,22 @@
     <div class="bg-light border-right" id="sidebar-wrapper">
       <div class="sidebar-heading">BÁO HẢI DƯƠNG</div>
       <div class="list-group list-group-flush">
-                <a href="/admin/dashboard/{{sec}}/0" class="list-group-item list-group-item-action bg-light">📌 Bảng điều khiển</a>
+                <a href="/dashboard/articles/page/1" class="list-group-item list-group-item-action bg-light">📌 Bảng điều khiển</a>
                 <ul class="list-group list-group-item">
-                  {% for i in article_counts %}
-
+                  {% for section in sections %}
                   <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a class="list-group-item-action" href="/admin/dashboard/{{i[0]}}/0">📎 
-                    {{  i[0] }}
-
+                    <a class="list-group-item-action" href="/dashboard/articles/sections/{{section['id_section']}}/page/1">📎 
+                    {{  section['name'] }}
                     </a>
-                    {%if i[1] > 0%}
+                    {%if section['count'] > 0%}
                     <span class="badge badge-primary badge-pill">
-                      
-                    {{i[1]}}
-                    
+                    {{section['count']}}
                   </span>
                   {%endif%}
-        
                   </li>              
                   {% endfor %}
                 </ul>
-
-               
-                 
-               
-        <a href="{{ url_for('admin')}}" class="list-group-item list-group-item-action bg-light">📝 Tạo bài báo</a>
+        <a href="/dashboard/articles/create" class="list-group-item list-group-item-action bg-light">📝 Tạo bài báo</a>
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -79,12 +68,24 @@
               <a class="nav-link" href="/">🏠 Trang chủ</a>
             </li>
 
+            {% if session['position'] == "Quản trị" %}
+            <li class="nav-item active">
+              <a class="nav-link" href="/dashboard/articles/page/1">📰 Bài báo</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/dashboard/sections">§ Chuyên mục</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/dashboard/users">👤 Người dùng</a>
+            </li>
+            {% endif %}
+
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                👤 {{FullName}}
+                👤 {{user['name']}}
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="/admin/account/all">Thông tin</a>
+                <a class="dropdown-item" href="/dashboard/profile">Thông tin</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="/logout">Đăng xuất</a>
               </div>
@@ -93,7 +94,7 @@
         </div>
       </nav>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
+      {% with messages = get_flashed_messages(with_categories=true) %}
       <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
       {% if messages %}
         {% for category, message in messages %}
@@ -115,67 +116,61 @@
       <!-- Blog Entries Column -->
       <div class="col-md-8">
 
-        <h1 class="my-3">
-          📍 {{sec}}
-        </h1>
-        <hr class="thin">
+      <h1 class="my-3">📍 {{title}} </h1>
+      <hr class="thin">
 
 
-        {% for article in articles %}
+      {% for article in articles %}
         <div class="card mb-4" 
-        {% if article[9] == "Bản thảo"%}
-        style="background-color: lightyellow"
+        {% if article['status'] == "Bản thảo"%}
+          style="background-color: lightyellow"
         {% endif %}
-        {% if article[9] == "Đã xuất bản"%}
-        style="background-color: #d7f9d7"
+        {% if article['status'] == "Xuất bản"%}
+          style="background-color: #d7f9d7"
         {% endif %}
         >
-          {% if article[6]  %}
-          <img class="card-img-top" src="/static/img/{{article[6]}}" alt="Card image cap">
+          {% if article['photo']  %}
+          <img class="card-img-top" src="/static/img/{{article['photo']}}" alt="Card image cap">
           {% endif %}
           <div class="card-body">
-            <h2 class="card-title">{{article[2]}}</h2>
-            <p class="card-text pbody">{{article[4][:200]}}</p>
-            <a href="/admin/article/read/{{article[0]}}" class="btn btn-primary">Đọc thêm &rarr;</a>
-            {% if position == "Biên tập" or article[11] %}
-            <a href="/admin/article/edit/{{article[0]}}" class="btn btn-info">Chỉnh sửa</a>
-            <a href="#myModal{{article[0]}}" data-toggle="modal" class="btn btn-danger">Xóa</a>
+            <h2 class="card-title">{{article['headline']}}</h2>
+            <p class="card-text pbody">{{article['body'][:200]}}...</p>
+            <a href="/dashboard/articles/read/{{article['id_article']}}" class="btn btn-primary">Đọc thêm &rarr;</a>
+            {% if user['position'] != "Biên soạn" or (article['id_poster'] == user['id_user'] and article['status'] == "Bản thảo")%}
+            <a href="/dashboard/articles/edit/{{article['id_article']}}" class="btn btn-info">Chỉnh sửa</a>
+            <a href="#myModal{{article['id_article']}}" data-toggle="modal" class="btn btn-danger">Xóa</a>
             {% endif %}
           </div>
-          <div class="card-footer text-muted">
-            Đã đăng {{article[10]}} bởi {{article[1]}}
-            
-          </div>
+          <div class="card-footer text-muted">Đã đăng {{article['last_edited']}} bởi {{article['poster_name']}}</div>
         </div>
 
-        <!-- Modal HTML -->
-<div id="myModal{{article[0]}}" class="modal fade">
-  <div class="modal-dialog modal-confirm">
-    <div class="modal-content">
-      <div class="modal-header">
-              
-        <h4 class="modal-title">❓ Bạn muốn xóa bài báo này?</h4>  
+          <!-- Modal HTML -->
+        <div id="myModal{{article['id_article']}}" class="modal fade">
+          <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">❓ Xóa bài báo</h4>  
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p>Bạn có chắc chắn muốn xóa bài báo này không? Hành động này sẽ không thể hoàn tạc.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-info" data-dismiss="modal">Không</button>
-        <a href="/admin/article/delete/{{sec}}/{{article[0]}}"><button class="btn btn-danger">Có</button></a>
-      </div>
-    </div>
-  </div>
-</div>     
-        {% endfor %}
+              </div>
+              <div class="modal-body">
+                <p>Bạn có chắc chắn muốn xóa bài báo này không? Hành động này sẽ không thể hoàn tạc.</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Không</button>
+                <form action="/dashboard/articles/delete/{{article['id_article']}}" method="post"><button class="btn btn-danger">Có</button></form>
+              </div>
+            </div>
+          </div>
+        </div>     
+      {% endfor %}
 
         <!-- Pagination -->
         <ul class="pagination justify-content-center mb-4">
           <li class="page-item {{oldb}}">
-            <a class="page-link" href="/admin/dashboard/{{sec}}/older">&larr; Cũ hơn</a>
+            <a class="page-link" href="/dashboard/articles{{link[0]}}{{link[1]}}/page/{{oldb}}">&larr; Cũ hơn</a>
           </li>
           <li class="page-item {{newb}}">
-            <a class="page-link" href="/admin/dashboard/{{sec}}/newer">Mới hơn &rarr;</a>
+            <a class="page-link" href="/dashboard/articles{{link[0]}}{{link[1]}}/page/{{newb}}">Mới hơn &rarr;</a>
           </li>
         </ul>
 
@@ -188,11 +183,15 @@
         <div class="card my-4">
           <h5 class="card-header">🔎 Tìm kiếm</h5>
           <div class="card-body">
-            <div class="input-group">
-              <input type="text" class="form-control" id="txt_search" placeholder="Tên bài báo...">
-              <span class="input-group-btn">
-                <button class="btn btn-secondary" type="button" id="btn_search">Tìm</button>
-              </span>
+            <div class="search-form">
+              <form action="/dashboard/articles/search/" method="get">
+                <div class="input-group">
+                  <input type="search" name="content" class="form-control" placeholder="Tìm kiếm" required>
+                  <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="submit" id="btn_search">Tìm</button>
+                  </span>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -208,8 +207,8 @@
                 <ul class="list-unstyled mb-0">
                   {% for section in sections %}       
                   <li>
-                    🔷 <a href="/admin/dashboard/{{section}}/0">
-                    {{ section }}
+                    🔷 <a href="/dashboard/articles/sections/{{section['id_section']}}/page/1">
+                    {{ section['name'] }}
                     </a>
                   </li>
              
@@ -224,14 +223,14 @@
         <div class="card my-4">
           <h5 class="card-header">📑 Kiểm duyệt</h5>
           <div class="card-body">
-            <a href="/admin/dashboard/{{sec}}/Bản%20thảo/0">
+            <a href="/dashboard/articles{{link[0]}}/status/Bản%20thảo/page/1">
             <div class="card mb-4" style="background-color: lightyellow">
               <div class="card-body">📄 Bản thảo <span class="badge badge-primary badge-pill">
                       {{draft}}
                   </span></div>
             </div>
           </a>
-          <a href="/admin/dashboard/{{sec}}/Đã%20xuất%20bản/0">
+          <a href="/dashboard/articles{{link[0]}}/status/Xuất%20bản/page/1">
             <div class="card mb-4" style="background-color: #d7f9d7">
               <div class="card-body">📰 Xuất bản
                     <span class="badge badge-primary badge-pill">
@@ -287,23 +286,6 @@
       $("#wrapper").toggleClass("toggled");
     });
   </script>
-
-
-    
-
-        <script>
-document.getElementById('btn_search').onclick = function() {
-  if (document.getElementById('txt_search').value.trim() != '')
-  {
-    location.href = '/admin/search/' + document.getElementById('txt_search').value;
-  }
-};
-</script>
-
-  
-  
-
-
 </body>
 
 </html>

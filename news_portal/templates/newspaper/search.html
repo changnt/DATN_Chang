@@ -9,7 +9,7 @@
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title -->
-    <title>{{searchMo}}</title>
+    <title>Tìm kiếm</title>
 
 
       <link href="{{ url_for('static', filename='newspaper/style.css') }}" rel="stylesheet">
@@ -33,8 +33,14 @@
                         <div class="top-header-content d-flex align-items-center justify-content-between">
                             <!-- Logo -->
                             <div class="logo">
-                                <a href="/"><img src="/static/newspaper/img/core-img/logo.png" alt=""></a>
+                                <a href="/"><img src="/static/img/logo-bao.png" alt=""></a>
                                 <div class="text-white">Trang báo điện tử của Chang</div>
+                            </div>
+                            <!-- Argibank -->
+                            <div >
+                                <a href="https://www.agribank.com.vn/" target="_blank"  >
+                                    <img src="/static/img/logo-argi.jpg" style="padding: 20px 20px 0px 40px;">
+                                </a>
                             </div>
 
                             <!-- Login Search Area -->
@@ -42,8 +48,8 @@
                                
                                 <!-- Search Form -->
                                 <div class="search-form">
-                                    <form action="#" method="post">
-                                        <input type="search" name="search" class="form-control" placeholder="Tìm kiếm">
+                                    <form action="/Tìm kiếm/" method="get">
+                                        <input type="search" name="content" class="form-control" placeholder="Tìm kiếm">
                                         <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
                                     </form>
                                 </div>
@@ -63,7 +69,7 @@
 
                         <!-- Logo -->
                         <div class="logo">
-                            <a href="index.html"><img src="/static/newspaper/img/core-img/logo.png" alt=""></a>
+                            <a href="index.html"><img src="/static/img/logo-bao.png" alt=""></a>
                         </div>
 
                         <!-- Navbar Toggler -->
@@ -82,12 +88,9 @@
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul>
-                                    <li class="active"><a href="/"><img style="max-width: 25px;height: 30px;align-items: center" src="/static/newspaper/img/core-img/iconHome_trangchu.png"></a></li>
-
+                                    <li><a href="/"><img src="/static/img/iconHome.png"></a></li>
                                     {% for section in sections %}
-                                   
-                                    <li><a href="/{{section}}/0">{{section}}</a></li>
-
+                                    <li><a href="/Chuyên mục/{{section['name']}}/{{section['id_section']}}/1">{{section['name']}}</a></li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -116,21 +119,20 @@
 
                         <!-- Single Featured Post -->
                         <div class="col-12 col-lg-12"> 
-                            <h1>Search results for "<i>{{searchMo}}</i>"</h1>            
-                            {% for data in results %}
+                            <h1>Các bài viết liên quan đến "<i>{{headline}}</i>"</h1>            
+                            {% for data in homedata %}
                             <div class="single-blog-post small-featured-post d-flex">
-                                {% if data[6] %}
+                                {% if data['photo'] %}
                                 <div class="post-thumb">
-                                    <a href="#"><img src="/static/img/{{data[6]}}" alt=""></a>
+                                    <a href="/{{data['section_name']}}/{{data['id_article']}}//{{data['headline']}}"><img src="/static/img/{{data['photo']}}" alt=""></a>
                                 </div>
                                 {% endif %}
                                 <div class="post-data">
-                                    <a href="/{{data[5]}}/0" class="post-catagory">{{data[5]}}</a>
                                     <div class="post-meta">
-                                        <a href="/read/{{data[5]}}/{{data[0]}}/{{data[2]}}" class="post-title">
-                                            <h6>{{data[2]}}</h6>
+                                        <a href="/{{data['section_name']}}/{{data['id_article']}}//{{data['headline']}}" class="post-title">
+                                            <h6>{{data['headline']}}</h6>
                                         </a>
-                                        <p class="post-date">{{data[10]}}</p>
+                                        <p class="post-date">{{data['last_edited']}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -147,18 +149,18 @@
 
                     {% for data in subdata %}
                     <div class="single-blog-post small-featured-post d-flex">
-                        {% if data[6] %}
+                        {% if data['photo'] %}
                         <div class="post-thumb">
-                            <a href="#"><img src="/static/img/{{data[6]}}" alt=""></a>
+                            <a href="/{{data['section_name']}}/{{data['id_article']}}//{{data['headline']}}"><img src="/static/img/{{data['photo']}}" alt=""></a>
                         </div>
                         {% endif %}
                         <div class="post-data">
-                            <a href="/{{data[5]}}/0" class="post-catagory">{{data[5]}}</a>
+                            <a href="/Chuyên mục/{{data['section_name']}}/{{data['id_section']}}/1" class="post-catagory">{{data['section_name']}}</a>
                             <div class="post-meta">
-                                <a href="/read/{{data[5]}}/{{data[0]}}/{{data[2]}}" class="post-title">
-                                    <h6>{{data[2]}}</h6>
+                                <a href="/{{data['section_name']}}/{{data['id_article']}}//{{data['headline']}}" class="post-title">
+                                    <h6>{{data['headline']}}</h6>
                                 </a>
-                                <p class="post-date">{{data[10]}}</p>
+                                <p class="post-date">{{data['last_edited']}}</p>
                             </div>
                         </div>
                     </div>
@@ -184,14 +186,14 @@
                         <div class="footer-widget-area mt-80">
                             <!-- Footer Logo -->
                             <div class="footer-logo">
-                                <a href="/"><img src="/static/newspaper/img/core-img/logo.png" alt=""></a>
-                                <div class="text-white">Trang báo điện tử của Chang</div>
+                                <a href="/"><img src="/static/img/logo-bao.png" alt=""></a>
+                                <div class="text-white"></div>
                             </div>
                             <!-- List -->
                             <ul class="list">
-                                <li><a href="mailto:chang@gmail.com">chang@gmail.com</a></li>
-                                <li><a href="tel:+0123456789">0123456789</a></li>
-                                <li><a href="tel:+0123456789">0123456789</a></li>
+                                <li><a href="mailto:chang@gmail.com">changnt82@gmail.com</a></li>
+                                <li><a href="tel:+0123456789">Đường dây nóng: 0347541678</a></li>
+                                <li><a href="tel:+0123456789">Liên hệ quảng cáo: 0347541678</a></li>
                                 <li><a href="https://www.facebook.com/nguyen.phuongchang">www.facebook.com/nguyen.phuongchang"</a></li>
                             </ul>
                         </div>
@@ -210,7 +212,7 @@
                     <div class="col-12">
                         <!-- Copywrite -->
                         <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> Bản quyền thuộc về Báo điện tử Hải Dương</a>
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
                     </div>
                 </div>

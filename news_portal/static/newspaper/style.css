@@ -261,8 +261,8 @@ textarea:focus {
   right: 60px;
   text-align: center;
   width: 40px;
-  -webkit-transition-duration: 500ms;
-  transition-duration: 500ms; }
+  -webkit-transition-duration: 200ms;
+  transition-duration: 200ms; }
   #scrollUp:hover {
     background-color: #000000; }
   @media only screen and (max-width: 767px) {
@@ -338,7 +338,7 @@ textarea:focus {
       .header-area .top-header-area .login-search-area .login a {
         display: inline-block;
         padding: 0 10px;
-        color: #FF0000; }
+        color: #fff; }
       .header-area .top-header-area .login-search-area .search-form form {
         width: 250px;
         height: 40px;
@@ -362,13 +362,13 @@ textarea:focus {
         .header-area .top-header-area .login-search-area .search-form form input {
           width: 100%;
           height: 100%;
-          border: 1px solid #000000;
+          border: 1px solid rgb(0, 0, 0);
           border-radius: 5px;
-          background-color: #000000;
+          background-color: transparent;
           padding: 0 15px;
           font-size: 12px;
           font-style: italic;
-          color: #ffffff; }
+          color: rgb(0, 0, 0); }
           .header-area .top-header-area .login-search-area .search-form form input.form-control {
             box-shadow: none; }
         .header-area .top-header-area .login-search-area .search-form form button {
@@ -380,23 +380,23 @@ textarea:focus {
           z-index: 10;
           border: none;
           background-color: transparent;
-          color: #fff;
+          color: rgb(0, 0, 0);
           cursor: pointer;
           outline: none; }
         .header-area .top-header-area .login-search-area .search-form form .form-control::-webkit-input-placeholder {
-          color: #fff;
+          color: rgb(0, 0, 0);
           opacity: 1; }
         .header-area .top-header-area .login-search-area .search-form form .form-control::-moz-placeholder {
-          color: #fff;
+          color: rgb(0, 0, 0);
           opacity: 1; }
         .header-area .top-header-area .login-search-area .search-form form .form-control:-ms-input-placeholder {
-          color: #fff;
+          color: rgb(0, 0, 0);
           opacity: 1; }
         .header-area .top-header-area .login-search-area .search-form form .form-control::-ms-input-placeholder {
-          color: #fff;
+          color: rgb(0, 0, 0);
           opacity: 1; }
         .header-area .top-header-area .login-search-area .search-form form .form-control::placeholder {
-          color: #fff;
+          color: rgb(0, 0, 0);
           opacity: 1; }
   .header-area .newspaper-main-menu {
     position: relative;
@@ -412,7 +412,7 @@ textarea:focus {
         background-color: #152535;
         height: 70px; } }
     .header-area .newspaper-main-menu .classy-nav-container {
-      background-color: #e32; }
+      background-color: transparent; }
     .header-area .newspaper-main-menu .classy-navbar {
       height: 80px;
       padding: 0; }
@@ -434,13 +434,13 @@ textarea:focus {
         font-weight: 500; }
         .header-area .newspaper-main-menu .classy-navbar .classynav ul li a:hover, .header-area .newspaper-main-menu .classy-navbar .classynav ul li a:focus {
           font-weight: 500;
-          color: #e32; }
+          color: #ee002d; }
       .header-area .newspaper-main-menu .classy-navbar .classynav > ul > li > a {
         text-transform: capitalize;
         padding: 12px 12px 11px;
-        background-color: #e32;
+        background-color: transparent;
         line-height: 1;
-        color: #ffffff;
+        color: #000000;
         font-weight: 500; }
         .header-area .newspaper-main-menu .classy-navbar .classynav > ul > li > a:hover, .header-area .newspaper-main-menu .classy-navbar .classynav > ul > li > a:focus {
           color: #1c1c1c; }
@@ -449,9 +449,9 @@ textarea:focus {
         z-index: 1;
         color: #1c1c1c; }
         .header-area .newspaper-main-menu .classy-navbar .classynav > ul > li.active > a::before {
-          background-color: #fff;
-          width: 0%;
-          height: 0px;
+          background-color: #f7f7f7;
+          width: 100%;
+          height: 3px;
           position: absolute;
           top: -26px;
           left: 0;
@@ -485,7 +485,7 @@ textarea:focus {
     .hero-area .breaking-news-area .news-title {
       min-width: 150px;
       height: 38px;
-      background-color: #e32;
+      background-color: #ee002d;
       text-align: center;
       padding: 0 20px; }
       .hero-area .breaking-news-area .news-title p {
@@ -526,7 +526,7 @@ textarea:focus {
             height: 38px;
             line-height: 38px; }
             .hero-area .breaking-news-area .ticker ul li a:hover, .hero-area .breaking-news-area .ticker ul li a:focus {
-              color: #e32; }
+              color: #ee002d; }
             @media only screen and (max-width: 767px) {
               .hero-area .breaking-news-area .ticker ul li a {
                 font-size: 12px; } }
@@ -553,7 +553,7 @@ textarea:focus {
     padding: 30px 0; }
     .single-blog-post .post-data .post-catagory {
       font-size: 14px;
-      color: #e32;
+      color: #ee002d;
       text-transform: uppercase;
       font-weight: 700;
       margin-bottom: 10px;
@@ -565,11 +565,11 @@ textarea:focus {
         transition-duration: 500ms;
         line-height: 1.9; }
         .single-blog-post .post-data .post-title h6:hover, .single-blog-post .post-data .post-title h6:focus {
-          color: #e32; }
+          color: #ee002d; }
     .single-blog-post .post-data .post-meta .post-date a {
       display: block; }
       .single-blog-post .post-data .post-meta .post-date a:hover, .single-blog-post .post-data .post-meta .post-date a:focus {
-        color: #e32; }
+        color: #ee002d; }
     .single-blog-post .post-data .post-meta .post-like {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -582,7 +582,7 @@ textarea:focus {
         line-height: 1;
         margin-left: 15px; }
         .single-blog-post .post-data .post-meta .post-like span:hover, .single-blog-post .post-data .post-meta .post-like span:focus {
-          color: #e32; }
+          color: #ee002d; }
     .single-blog-post .post-data .post-meta .post-comment {
       margin-left: 20px;
       display: -webkit-box;
@@ -596,7 +596,7 @@ textarea:focus {
         line-height: 1;
         margin-left: 15px; }
         .single-blog-post .post-data .post-meta .post-comment span:hover, .single-blog-post .post-data .post-meta .post-comment span:focus {
-          color: #e32; }
+          color: #ee002d; }
   .single-blog-post.style-2 .post-data {
     padding: 15px 0; }
     .single-blog-post.style-2 .post-data .post-title h6 {
@@ -630,7 +630,7 @@ textarea:focus {
         width: 100%; }
         .single-blog-post.featured-post .post-data .post-author a {
           display: inline-block;
-          color: #e32; }
+          color: #ee002d; }
       .single-blog-post.featured-post .post-data .post-excerp {
         font-weight: 500;
         margin-bottom: 40px;
@@ -646,7 +646,7 @@ textarea:focus {
         color: #2c61db;
         margin: 40px 0; }
         .single-blog-post.featured-post.single-post .post-data .related--post:hover, .single-blog-post.featured-post.single-post .post-data .related--post:focus {
-          color: #e32; }
+          color: #ee002d; }
   .single-blog-post.featured-post-2 {
     position: relative;
     z-index: 1;
@@ -664,7 +664,7 @@ textarea:focus {
         width: 100%; }
         .single-blog-post.featured-post-2 .post-data .post-author a {
           display: inline-block;
-          color: #e32; }
+          color: #ee002d; }
   .single-blog-post.small-featured-post {
     position: relative;
     z-index: 1;
@@ -723,7 +723,7 @@ textarea:focus {
     font-weight: 500;
     padding-right: 3px; }
     .newspaper-tags ul li a:hover, .newspaper-tags ul li a:focus {
-      color: #e32; }
+      color: #ee002d; }
 
 @media only screen and (max-width: 767px) {
   .post-like--comments {
@@ -742,7 +742,7 @@ textarea:focus {
     font-size: 30px;
     margin-bottom: 30px;
     font-weight: 400;
-    color: #e32; }
+    color: #ee002d; }
     @media only screen and (max-width: 767px) {
       .popular-news-widget h3 {
         font-size: 24px; } }
@@ -760,9 +760,9 @@ textarea:focus {
       font-weight: 500; }
       .popular-news-widget .single-popular-post h6 span {
         margin-right: 15px;
-        color: #e32; }
+        color: #ee002d; }
       .popular-news-widget .single-popular-post h6:hover, .popular-news-widget .single-popular-post h6:focus {
-        color: #e32; }
+        color: #ee002d; }
     .popular-news-widget .single-popular-post p {
       margin-bottom: 0;
       font-size: 11px;
@@ -809,7 +809,7 @@ textarea:focus {
       .latest-comments-widget .single-comments .comments-text a span {
         color: #a8a8a8; }
       .latest-comments-widget .single-comments .comments-text a:hover, .latest-comments-widget .single-comments .comments-text a:focus {
-        color: #e32; }
+        color: #ee002d; }
     .latest-comments-widget .single-comments .comments-text p {
       margin-bottom: 0;
       font-size: 11px;
@@ -827,7 +827,7 @@ textarea:focus {
   padding: 60px 25px; }
   .newsletter-widget h4 {
     text-align: center;
-    color: #e32; }
+    color: #ee002d; }
   .newsletter-widget p {
     font-size: 12px;
     text-align: center; }
@@ -844,7 +844,7 @@ textarea:focus {
   .newsletter-widget form button {
     width: 100%;
     height: 50px;
-    background-color: #e32;
+    background-color: #ee002d;
     font-size: 14px;
     font-style: italic;
     color: #fff;
@@ -855,7 +855,7 @@ textarea:focus {
       -webkit-transition-duration: 500ms;
       transition-duration: 500ms;
       background-color: #fff;
-      color: #e32; }
+      color: #ee002d; }
 
 .pagination {
   position: relative;
@@ -1048,9 +1048,10 @@ textarea:focus {
 /* :: 9.0 Footer Area */
 .footer-area {
   position: relative;
+  border-top: 0.5px solid #000000 ;
   z-index: 1;
   width: 100%;
-  background-color: #02031c; }
+  background-color: #ffffff; }
   .footer-area .footer-widget-area {
     position: relative;
     z-index: 1; }
@@ -1059,7 +1060,7 @@ textarea:focus {
     .footer-area .footer-widget-area .widget-title {
       display: block;
       margin-bottom: 30px;
-      color: #fff; }
+      color: rgb(0, 0, 0); }
     .footer-area .footer-widget-area .list {
       position: relative;
       z-index: 1; }
@@ -1068,21 +1069,21 @@ textarea:focus {
         .footer-area .footer-widget-area .list li a {
           display: block;
           padding: 5px 0;
-          color: rgba(255, 255, 255, 0.5); }
+          color: rgb(0, 0, 0); }
           .footer-area .footer-widget-area .list li a:hover, .footer-area .footer-widget-area .list li a:focus {
-            color: #fff; }
+            color: rgb(0, 0, 0); }
   .footer-area .bottom-footer-area {
     position: relative;
     z-index: 1;
     width: 100%;
     height: 70px; }
     .footer-area .bottom-footer-area p {
-      color: rgba(255, 255, 255, 0.5);
-      margin-bottom: 0; }
+      color: rgb(0, 0, 0);
+      margin-bottom: 0px; }
       .footer-area .bottom-footer-area p a {
-        color: rgba(255, 255, 255, 0.5); }
+        color: rgb(0, 0, 0); }
         .footer-area .bottom-footer-area p a:hover, .footer-area .bottom-footer-area p a:focus {
-          color: #fff; }
+          color: rgb(0, 0, 0); }
 
 /* :: 10.0 About Area */
 .about-area {
@@ -1159,9 +1160,9 @@ textarea:focus {
   z-index: 1; }
   .single-contact-information h6 {
     font-size: 14px;
-    border-bottom: 2px solid #e32;
+    border-bottom: 2px solid #ee002d;
     display: inline-block;
-    color: #e32; }
+    color: #ee002d; }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .contact-form-area {
@@ -1194,7 +1195,7 @@ textarea:focus {
   z-index: 1; }
   .contact-area .contact-title h2 {
     font-size: 40px;
-    color: #A9A9A9;
+    color: #393939;
     margin-bottom: 80px; }
     @media only screen and (max-width: 767px) {
       .contact-area .contact-title h2 {
