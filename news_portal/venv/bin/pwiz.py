@@ -1,4 +1,4 @@
-#!/home/chang/news_portal_mvc-master/venv/bin/python3
+#!/home/chang/news_portal/venv/bin/python3
 
 import datetime
 import os
